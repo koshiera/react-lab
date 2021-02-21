@@ -1,23 +1,28 @@
-import React, { FC, useContext, createContext, useReducer } from 'react';
+import React, { FC, Dispatch, createContext, useContext, useReducer } from 'react';
 
-import { User, UserReducer, Tag, TagReducer } from '../reducer';
+import * as reducers from '../reducer';
+
+type ReducerType<T extends readonly [ any, any ]> = [
+	Parameters<T[0]>[0],
+	Dispatch<Parameters<T[0]>[1]>
+]
 
 type Context = {
-	user: UserReducer,
-	tag: TagReducer
+	user: ReducerType<typeof reducers.User>,
+	tag: ReducerType<typeof reducers.Tag>
 }
 
 const context: Context = {
-	user: [ User.initialState, () => {} ],
-	tag: [ Tag.initialState, () => {} ],
+	user: [ reducers.User[1], () => {} ],
+	tag: [ reducers.Tag[1], () => {} ],
 };
 
 const Context = createContext<Context>(context);
 
 const Provider: FC = ({ children }) => {
 
-	const user = useReducer(User.reducer, User.initialState);
-	const tag = useReducer(Tag.reducer, Tag.initialState);
+	const user = useReducer(...reducers.User);
+	const tag = useReducer(...reducers.Tag);
 
 	return (
 		<Context.Provider

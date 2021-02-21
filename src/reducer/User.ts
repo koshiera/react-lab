@@ -1,3 +1,5 @@
+import { Reducer } from 'react';
+
 type IUser = {
 	name: string
 }
@@ -11,15 +13,11 @@ type State = {
 	data: IUser[]
 }
 
-type Reducer = (state: State, action: Action) => State
-
-export type UserReducer = [ State, React.Dispatch<Action> ]
-
 const initialState: State = {
 	data: [],
 };
 
-const reducer: Reducer = (state, action) => {
+const reducer: Reducer<State, Action> = (state, action) => {
 	switch (action.type) {
 		case 'read':
 			return { ...state };
@@ -32,7 +30,4 @@ const reducer: Reducer = (state, action) => {
 	}
 }
 
-export const User = {
-	reducer,
-	initialState,
-}
+export const User = [ reducer, initialState ] as const
