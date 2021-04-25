@@ -1,5 +1,5 @@
 import { Reducer } from 'react';
-import * as reducers from '../reducer';
+import * as reducers from '../reducers';
 export {}
 
 // type Arg1<T extends Function> = T extends (a1: infer A1) => any ? A1 : never;

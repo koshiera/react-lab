@@ -1,16 +1,16 @@
 import { Reducer } from 'react';
 
-type ITag = {
-	title: string
+type IUser = {
+	name: string
 }
 
 type Action =
 	{ type: 'read' } |
 	{ type: 'read_done' } |
-	{ type: 'create', item: ITag }
+	{ type: 'create', item: IUser }
 
 type State = {
-	data: ITag[]
+	data: IUser[]
 }
 
 const initialState: State = {
@@ -30,4 +30,4 @@ const reducer: Reducer<State, Action> = (state, action) => {
 	}
 }
 
-export const Tag = [ reducer, initialState ] as const
+export const user = [ reducer, initialState ] as const

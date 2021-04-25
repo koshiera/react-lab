@@ -1,6 +1,10 @@
 import React, { FC, Dispatch, createContext, useContext, useReducer, useMemo } from 'react';
 
-import * as reducers from '../reducer';
+import * as reducers from '../reducers';
+
+const combineReducers = () => {
+
+}
 
 type ReducerType<T extends readonly [ any, any ]> = [
 	Parameters<T[0]>[0],
@@ -8,21 +12,21 @@ type ReducerType<T extends readonly [ any, any ]> = [
 ]
 
 type Context = {
-	user: ReducerType<typeof reducers.User>,
-	tag: ReducerType<typeof reducers.Tag>
+	user: ReducerType<typeof reducers.user>,
+	tag: ReducerType<typeof reducers.tag>
 }
 
 const context: Context = {
-	user: [ reducers.User[1], () => {} ],
-	tag: [ reducers.Tag[1], () => {} ],
+	user: [ reducers.user[1], () => {} ],
+	tag: [ reducers.tag[1], () => {} ],
 };
 
 const Context = createContext<Context>(context);
 
 const Provider: FC = ({ children }) => {
 
-	const user = useReducer(...reducers.User);
-	const tag = useReducer(...reducers.Tag);
+	const user = useReducer(...reducers.user);
+	const tag = useReducer(...reducers.tag);
 
 	const value = useMemo(
 		() => ({ user, tag }),
