@@ -1,4 +1,4 @@
-import React, { FC, Dispatch, createContext, useContext, useReducer } from 'react';
+import React, { FC, Dispatch, createContext, useContext, useReducer, useMemo } from 'react';
 
 import * as reducers from '../reducer';
 
@@ -24,9 +24,15 @@ const Provider: FC = ({ children }) => {
 	const user = useReducer(...reducers.User);
 	const tag = useReducer(...reducers.Tag);
 
+	const value = useMemo(
+		() => ({ user, tag }),
+		[ user, tag ]
+	);
+
 	return (
 		<Context.Provider
-			value={{ user, tag }}
+			value={value}
+			// value={{ user, tag }}
 			children={children} />
 	);
 
