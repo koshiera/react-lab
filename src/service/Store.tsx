@@ -8,19 +8,8 @@ type Reducer<T extends readonly [ any, any ]> = [
 ]
 
 type Context = {
-	// [key in keyof typeof reducers]: typeof reducers[key]
 	[key in keyof typeof reducers]: Reducer<typeof reducers[key]>
-};
-
-// type Context = {
-// 	user: ReducerType<typeof reducers.user>,
-// 	tag: ReducerType<typeof reducers.tag>
-// }
-
-// const context: Context = {
-// 	user: [ reducers.user[1], () => {} ],
-// 	tag: [ reducers.tag[1], () => {} ],
-// };
+}
 
 const Context = createContext({} as Context);
 
@@ -37,16 +26,12 @@ const Provider: FC = ({ children }) => {
 	return (
 		<Context.Provider
 			value={value}
-			// value={{ user, tag }}
 			children={children} />
 	);
 
 }
 
-export const Store = {
-	Provider,
-	Context,
-}
+export const Store = { Provider };
 
 export const useStore = <T extends keyof Context>(store: T) => {
 
