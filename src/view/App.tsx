@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Store } from '../service';
-import { useTag, useUser } from '../hook';
+import { useRenderCounter, useTag, useUser } from '../hook';
 
 const TagsList = () => {
+
+	const [ count ] = useRenderCounter('TagsList');
 
 	const { data } = useTag();
 
 	return (
 		<div>
 			<h2>Tags</h2>
+			<p>Render count: {count}</p>
 			<ul>
 			{data.map(({ title }, i) => <li key={i} children={title} />)}
 			</ul>
@@ -20,11 +23,14 @@ const TagsList = () => {
 
 const UserProfile = () => {
 
+	const [ count ] = useRenderCounter('UserProfile');
+
 	const { data } = useUser();
 
 	return (
 		<div>
 			<h2>Users</h2>
+			<p>Render count: {count}</p>
 			<ul>
 			{data.map(({ name }, i) => <li key={i} children={name} />)}
 			</ul>
@@ -34,6 +40,8 @@ const UserProfile = () => {
 }
 
 const UserCreate = () => {
+
+	const [ count ] = useRenderCounter('UserCreate');
 
 	const { create } = useUser();
 
@@ -50,6 +58,7 @@ const UserCreate = () => {
 	return (
 		<>
 			<h3>Create user</h3>
+			<p>Render count: {count}</p>
 			<input
 				type="text"
 				value={name}
@@ -63,6 +72,8 @@ const UserCreate = () => {
 }
 
 const TagCreate = () => {
+
+	const [ count ] = useRenderCounter('TagCreate');
 
 	const { create } = useTag();
 
@@ -79,6 +90,7 @@ const TagCreate = () => {
 	return (
 		<>
 			<h3>Create tag</h3>
+			<p>Render count: {count}</p>
 			<input
 				type="text"
 				value={title}
@@ -91,6 +103,25 @@ const TagCreate = () => {
 
 }
 
+const ExtraDiv: React.FC = ({ children }) => {
+	const [ count ] = useRenderCounter('ExtraDiv');
+	return (
+		<>
+			<div>01 render count: {count}</div>
+			<div children={children} />
+		</>
+	);
+}
+
+const ExtraContent = () => {
+	const [ count ] = useRenderCounter('ExtraContent');
+	return (
+		<>
+			<div>Extra content render count: {count}</div>
+		</>
+	);
+}
+
 export const App = () => {
 
 	return (
@@ -98,8 +129,11 @@ export const App = () => {
 			<h1>Lab</h1>
 			<UserProfile />
 			<UserCreate />
-			<TagsList />
-			<TagCreate />
+			<ExtraDiv>
+				<TagsList />
+				<TagCreate />
+				<ExtraContent />
+			</ExtraDiv>
 		</Store.Provider>
 	);
 

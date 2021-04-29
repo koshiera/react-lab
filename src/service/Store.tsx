@@ -1,41 +1,37 @@
-import React, { FC, Dispatch, createContext, useContext, useReducer } from 'react';
+import React, { FC, Dispatch, createContext, useContext, useReducer, useMemo } from 'react';
 
-import * as reducers from '../reducer';
+import * as reducers from '../reducers';
 
-type ReducerType<T extends readonly [ any, any ]> = [
+type Reducer<T extends readonly [ any, any ]> = [
 	Parameters<T[0]>[0],
 	Dispatch<Parameters<T[0]>[1]>
 ]
 
 type Context = {
-	user: ReducerType<typeof reducers.User>,
-	tag: ReducerType<typeof reducers.Tag>
+	[key in keyof typeof reducers]: Reducer<typeof reducers[key]>
 }
 
-const context: Context = {
-	user: [ reducers.User[1], () => {} ],
-	tag: [ reducers.Tag[1], () => {} ],
-};
-
-const Context = createContext<Context>(context);
+const Context = createContext({} as Context);
 
 const Provider: FC = ({ children }) => {
 
-	const user = useReducer(...reducers.User);
-	const tag = useReducer(...reducers.Tag);
+	const user = useReducer(...reducers.user);
+	const tag = useReducer(...reducers.tag);
+
+	const value = useMemo(
+		() => ({ user, tag }),
+		[ user, tag ]
+	);
 
 	return (
 		<Context.Provider
-			value={{ user, tag }}
+			value={value}
 			children={children} />
 	);
 
 }
 
-export const Store = {
-	Provider,
-	Context,
-}
+export const Store = { Provider };
 
 export const useStore = <T extends keyof Context>(store: T) => {
 
